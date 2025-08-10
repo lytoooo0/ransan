@@ -2,15 +2,15 @@ use eframe::egui;
 
 pub mod widget;
 
-use widget::block::Block;
+use widget::column::Column;
 
 struct MyApp {
-    ui: Block,
+    ui: Column,
 }
 
 impl Default for MyApp {
     fn default() -> Self {
-        Self { ui: Block::new() }
+        Self { ui: Column::new() }
     }
 }
 

@@ -1,6 +1,7 @@
 use chrono::{DateTime, Duration, Local};
 use eframe::egui;
 
+// TODO: should I add a uuid for each block
 pub struct Block {
     title: String,
     note: String,
@@ -11,10 +12,10 @@ pub struct Block {
 }
 
 impl Block {
-    pub fn new() -> Self {
+    pub fn new(name: String) -> Self {
         let current_time = chrono::Local::now();
         Self {
-            title: String::from("Choose background color"),
+            title: String::from("Choose background color") + &name,
             note: String::from("for both Light and Dark mode."),
             created_time: current_time,
             planned_time: current_time + Duration::days(7),
@@ -51,9 +52,6 @@ impl Block {
                         user_str = user_str + " " + &user.to_string();
                     }
                     ui.label(user_str);
-                    // if ui.button("Click me!").clicked() {
-                    //     println!("Button Clicked");
-                    // }
                 });
         });
     }

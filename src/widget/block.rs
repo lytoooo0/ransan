@@ -15,8 +15,8 @@ impl Block {
     pub fn new(name: String) -> Self {
         let current_time = chrono::Local::now();
         Self {
-            title: String::from("Choose background color") + &name,
-            note: String::from("for both Light and Dark mode."),
+            title: String::from("Item") + &name,
+            note: String::from("Blank note..."),
             created_time: current_time,
             planned_time: current_time + Duration::days(7),
             users: vec![123, 456],

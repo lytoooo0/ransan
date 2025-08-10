@@ -1,24 +1,42 @@
-use chrono::{DateTime, Duration, Local};
+use chrono::{DateTime, Local};
 use eframe::egui;
+
+struct DateSublock {
+    title: String,
+    time: DateTime<Local>,
+}
+impl DateSublock {
+    pub fn new(name: String) -> Self {
+        Self {
+            title: name,
+            time: chrono::Local::now(),
+        }
+    }
+
+    pub fn draw(&mut self, ui: &mut egui::Ui) {
+        let title =
+            self.title.clone() + &String::from(": ") + &self.time.format("%Y-%m-%d").to_string();
+        ui.label(title);
+    }
+}
 
 // TODO: should I add a uuid for each block
 pub struct Block {
     title: String,
     note: String,
-    created_time: DateTime<Local>,
-    planned_time: DateTime<Local>,
+    created_time: DateSublock,
+    planned_time: DateSublock,
     users: Vec<u64>, // Vectors of User IDs
     checked: bool,
 }
 
 impl Block {
     pub fn new(name: String) -> Self {
-        let current_time = chrono::Local::now();
         Self {
             title: String::from("Item") + &name,
             note: String::from("Blank note..."),
-            created_time: current_time,
-            planned_time: current_time + Duration::days(7),
+            created_time: DateSublock::new(String::from("Created")),
+            planned_time: DateSublock::new(String::from("Due")),
             users: vec![123, 456],
             checked: false,
         }
@@ -37,14 +55,8 @@ impl Block {
                 .default_open(true)
                 .show(ui, |ui| {
                     ui.label(self.note.clone());
-                    ui.label(
-                        String::from("Created: ")
-                            + &self.created_time.format("%Y-%m-%d").to_string(),
-                    );
-                    ui.label(
-                        String::from("Due: ")
-                            + &self.planned_time.format("%Y-%m-%d %H:%M").to_string(),
-                    );
+                    self.created_time.draw(ui);
+                    self.planned_time.draw(ui);
                     // TODO: unify icon size
                     let mut user_str = String::from("User: ");
 
